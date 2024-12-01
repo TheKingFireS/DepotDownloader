@@ -63,15 +63,15 @@ jobs:
 
       - name: Publish Linux-musl-x64
         if: matrix.configuration == 'Release' && matrix.runs-on == 'ubuntu-latest'
-        run: dotnet publish DepotDownloader/DepotDownloader.csproj --configuration Release -p:PublishSingleFile=true -p:DebugType=embedded --self-contained --runtime linux-musl-x64 --output selfcontained-linux-musl-x64
+        run: dotnet publish DepotDownloader/DepotDownloader.csproj --configuration Release -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -p:DebugType=embedded --self-contained --runtime linux-musl-x64 --output selfcontained-linux-musl-x64
 
       - name: Publish Linux-musl-arm
         if: matrix.configuration == 'Release' && matrix.runs-on == 'ubuntu-latest'
-        run: dotnet publish DepotDownloader/DepotDownloader.csproj --configuration Release -p:PublishSingleFile=true -p:DebugType=embedded --self-contained --runtime linux-musl-arm --output selfcontained-linux-musl-arm
+        run: dotnet publish DepotDownloader/DepotDownloader.csproj --configuration Release -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -p:DebugType=embedded --self-contained --runtime linux-musl-arm --output selfcontained-linux-musl-arm
 
       - name: Publish Linux-musl-arm64
         if: matrix.configuration == 'Release' && matrix.runs-on == 'ubuntu-latest'
-        run: dotnet publish DepotDownloader/DepotDownloader.csproj --configuration Release -p:PublishSingleFile=true -p:DebugType=embedded --self-contained --runtime linux-musl-arm64 --output selfcontained-linux-musl-arm64
+        run: dotnet publish DepotDownloader/DepotDownloader.csproj --configuration Release -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -p:DebugType=embedded --self-contained --runtime linux-musl-arm64 --output selfcontained-linux-musl-arm64
 
       - name: Publish macOS-x64
         if: matrix.configuration == 'Release' && matrix.runs-on == 'macos-latest'
