@@ -1,6 +1,7 @@
 // This file is subject to the terms and conditions defined
 // in file 'LICENSE', which is part of this source code package.
 
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
@@ -22,9 +23,16 @@ namespace DepotDownloader
             var hasExecuteMask = (mode & ModeExecute) == ModeExecute;
             if (hasExecuteMask != value)
             {
-                File.SetUnixFileMode(path, value
-                    ? mode | ModeExecute
-                    : mode & ~ModeExecute);
+                try
+                {
+                    File.SetUnixFileMode(path, value
+                        ? mode | ModeExecute
+                        : mode & ~ModeExecute);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    Console.WriteLine($"Warning: Permission modification failed for '{path}', skipping...\nDetails: {ex.Message}");
+                }
             }
         }
 
