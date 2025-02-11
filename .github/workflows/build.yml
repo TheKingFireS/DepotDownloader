@@ -61,10 +61,6 @@ jobs:
         if: matrix.configuration == 'Release' && matrix.runs-on == 'ubuntu-latest'
         run: dotnet publish DepotDownloader/DepotDownloader.csproj --configuration Release -p:PublishSingleFile=true -p:DebugType=embedded --self-contained --runtime linux-arm64 --output selfcontained-linux-arm64
 
-      - name: Publish Linux-musl-x86
-        if: matrix.configuration == 'Release' && matrix.runs-on == 'ubuntu-latest'
-        run: dotnet publish DepotDownloader/DepotDownloader.csproj --configuration Release -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -p:DebugType=embedded --self-contained --runtime linux-musl-x86 --output selfcontained-linux-musl-x86
-
       - name: Publish Linux-musl-x64
         if: matrix.configuration == 'Release' && matrix.runs-on == 'ubuntu-latest'
         run: dotnet publish DepotDownloader/DepotDownloader.csproj --configuration Release -p:PublishSingleFile=true -p:EnableCompressionInSingleFile=true -p:DebugType=embedded --self-contained --runtime linux-musl-x64 --output selfcontained-linux-musl-x64
@@ -123,14 +119,6 @@ jobs:
         with:
           name: DepotDownloader-linux-arm64
           path: selfcontained-linux-arm64
-          if-no-files-found: error
-
-      - name: Upload Linux-musl-x86
-        uses: actions/upload-artifact@v4
-        if: matrix.configuration == 'Release' && matrix.runs-on == 'ubuntu-latest'
-        with:
-          name: DepotDownloader-linux-musl-x86
-          path: selfcontained-linux-musl-x86
           if-no-files-found: error
 
       - name: Upload Linux-musl-x64
@@ -194,7 +182,6 @@ jobs:
         chmod +x artifacts/DepotDownloader-linux-x64/DepotDownloader
         chmod +x artifacts/DepotDownloader-linux-arm/DepotDownloader
         chmod +x artifacts/DepotDownloader-linux-arm64/DepotDownloader
-        chmod +x artifacts/DepotDownloader-linux-musl-x86/DepotDownloader
         chmod +x artifacts/DepotDownloader-linux-musl-x64/DepotDownloader
         chmod +x artifacts/DepotDownloader-linux-musl-arm/DepotDownloader
         chmod +x artifacts/DepotDownloader-linux-musl-arm64/DepotDownloader
@@ -206,7 +193,6 @@ jobs:
         zip -9j release/DepotDownloader-linux-x64.zip artifacts/DepotDownloader-linux-x64/*
         zip -9j release/DepotDownloader-linux-arm.zip artifacts/DepotDownloader-linux-arm/*
         zip -9j release/DepotDownloader-linux-arm64.zip artifacts/DepotDownloader-linux-arm64/*
-        zip -9j release/DepotDownloader-linux-musl-x86.zip artifacts/DepotDownloader-linux-musl-x86/*
         zip -9j release/DepotDownloader-linux-musl-x64.zip artifacts/DepotDownloader-linux-musl-x64/*
         zip -9j release/DepotDownloader-linux-musl-arm.zip artifacts/DepotDownloader-linux-musl-arm/*
         zip -9j release/DepotDownloader-linux-musl-arm64.zip artifacts/DepotDownloader-linux-musl-arm64/*
