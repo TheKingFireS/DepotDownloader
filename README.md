@@ -82,14 +82,14 @@ Parameter               | Description
 `-remember-password`	| if set, remember the password for subsequent logins of this user. (Use `-username <username> -remember-password` as login credentials)
 `-dir <installdir>`     | the directory in which to place downloaded files.
 `-filelist <file.txt>`	| the name of a local file that contains a list of files to download (from the manifest). prefix file path with `regex:` if you want to match with regex. each file path should be on their own line.
-`-validate`				| Include checksum verification of files already downloaded
+`-validate`				| include checksum verification of files already downloaded.
 `-manifest-only`		| downloads a human readable manifest for any depots that would be downloaded.
 `-cellid <#>`			| the overridden CellID of the content server to download from.
-`-max-servers <#>`		| maximum number of content servers to use. (default: 20).
 `-max-downloads <#>`	| maximum number of chunks to download concurrently. (default: 8).
-`-loginid <#>`			| a unique 32-bit integer Steam LogonID in decimal, required if running multiple instances of DepotDownloader concurrently.
-`-use-lancache`         | forces downloads over the local network via a Lancache instance
-`-V` or `--version`     | print version and runtime
+`-loginid <#>`			| a unique 32-bit integer Steam LogonID in decimal, required if running multiple instances of DepotDownloader concurrently
+`-use-lancache`         | forces downloads over the local network via a Lancache instance.
+`-debug`                | enable verbose debug logging.
+`-V` or `--version`     | print version and runtime.
 
 ## Frequently Asked Questions
 
@@ -106,3 +106,7 @@ If you pass the `-password` parameter with a password that contains special char
 Try logging in with a Steam account, this may happen when using anonymous account.
 
 Steam allows developers to block downloading old manifests, in which case no manifest code is returned even when parameters appear correct.
+
+### Why am I getting slow download speeds and frequent connection timeouts?
+When downloading old builds, cache server may not have the chunks readily available which makes downloading slower.
+Try increasing `-max-downloads` to saturate the network more.
