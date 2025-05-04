@@ -68,20 +68,20 @@ namespace DepotDownloader
             var password = GetParameter<string>(args, "-password") ?? GetParameter<string>(args, "-pass");
             ContentDownloader.Config.RememberPassword = HasParameter(args, "-remember-password");
             ContentDownloader.Config.UseQrCode = HasParameter(args, "-qr");
+            ContentDownloader.Config.SkipAppConfirmation = HasParameter(args, "-no-mobile");
 
             if (username == null)
             {
-                if (ContentDownloader.Config.RememberPassword)
+                if (ContentDownloader.Config.RememberPassword && !ContentDownloader.Config.UseQrCode)
                 {
-                    Console.WriteLine("Error: -remember-password can not be used without -username.");
+                    Console.WriteLine("Error: -remember-password can not be used without -username or -qr.");
                     return 1;
                 }
-
-                if (ContentDownloader.Config.UseQrCode)
-                {
-                    Console.WriteLine("Error: -qr can not be used without -username.");
-                    return 1;
-                }
+            }
+            else if (ContentDownloader.Config.UseQrCode)
+            {
+                Console.WriteLine("Error: -qr can not be used with -username.");
+                return 1;
             }
 
             ContentDownloader.Config.DownloadManifestOnly = HasParameter(args, "-manifest-only");
@@ -350,6 +350,11 @@ namespace DepotDownloader
             {
                 if (username != null && password == null && (!ContentDownloader.Config.RememberPassword || !AccountSettingsStore.Instance.LoginTokens.ContainsKey(username)))
                 {
+                    if (AccountSettingsStore.Instance.LoginTokens.ContainsKey(username))
+                    {
+                        Console.WriteLine($"Account \"{username}\" has stored credentials. Did you forget to specify -remember-password?");
+                    }
+
                     do
                     {
                         Console.Write("Enter account password for \"{0}\": ", username);
@@ -511,6 +516,8 @@ namespace DepotDownloader
             Console.WriteLine("  -password <pass>         - the password of the account to login to for restricted content.");
             Console.WriteLine("  -remember-password       - if set, remember the password for subsequent logins of this user.");
             Console.WriteLine("                             use -username <username> -remember-password as login credentials.");
+            Console.WriteLine("  -qr                      - display a login QR code to be scanned with the Steam mobile app");
+            Console.WriteLine("  -no-mobile               - prefer entering a 2FA code instead of prompting to accept in the Steam mobile app");
             Console.WriteLine();
             Console.WriteLine("  -dir <installdir>        - the directory in which to place downloaded files.");
             Console.WriteLine("  -filelist <file.txt>     - the name of a local file that contains a list of files to download (from the manifest).");
